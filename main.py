@@ -202,12 +202,16 @@ def get_stocks():
     for symbol in popular_symbols:
         try:
             stock_data = get_financial_data(symbol)
-            if stock_data:
-                results.append(stock_data)
-        except Exception as e:
-            print(f"Error fetching data for {symbol}: {e}")
+            #if stock_data:
+                #results.append(stock_data)
+       # except Exception as e:
+            #print(f"Error fetching data for {symbol}: {e}")
     
-    return jsonify(results)
+    #return jsonify(results)
+        return {"stocks": stock_data}
+    except Exception as e:
+        logging.exception("Error occurred in /api/stocks endpoint")
+        return JSONResponse(status_code=500, content={"error": str(e)})
 
 @app.route('/api/stocks/<symbol>', methods=['GET'])
 def get_stock(symbol):
