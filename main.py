@@ -191,7 +191,8 @@ def get_stock_performance_data(symbol, period="5y"):
     # For more detailed charts, use different resampling
     return []
 
-@app.route('/api/stocks', methods=['GET'])
+#@app.route('/api/stocks', methods=['GET'])
+@app.get("/api/stocks")
 def get_stocks():
     """Get a list of popular stocks."""
     # Default list of popular stocks
