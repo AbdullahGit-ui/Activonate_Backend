@@ -28,6 +28,7 @@ packaging==24.2
 pandas==2.2.3
     # via
     #   -r requirements.in
+Flask==2.2.2
     #   seaborn
 pillow==11.1.0
     # via matplotlib
