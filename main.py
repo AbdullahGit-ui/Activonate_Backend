@@ -3,12 +3,13 @@ import uvicorn
 import json
 from datetime import datetime, timedelta
 from flask import Flask, jsonify, request
-from flask_cors import CORS
+#from flask_cors import CORS
 from fastapi import FastAPI
 import uvicorn
 import os
 import requests
 from yahooquery import Ticker
+from fastapi.middleware.cors import CORSMiddleware
 from config import (
     ALPHA_VANTAGE_API_KEY,
     FINNHUB_API_KEY,
@@ -18,7 +19,14 @@ from config import (
 
 #app = Flask(__name__)
 app = FastAPI()
-CORS(app)  # Enable CORS for all routes
+#CORS(app)  # Enable CORS for all routes
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change this to a list of trusted origins in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 def get_price_from_alpha_vantage(symbol):
     """Get current price from Alpha Vantage."""
