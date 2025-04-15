@@ -208,43 +208,40 @@ def get_stocks():
     
     return JSONResponse(content=results)
 
-@app.route('/api/stocks/<symbol>', methods=['GET'])
-def get_stock(symbol):
+@app.get("/api/stocks/{symbol}")
+async def get_stock(symbol: str):
     """Get detailed data for a specific stock."""
     try:
         stock_data = get_financial_data(symbol)
         if not stock_data:
-            return jsonify({"error": "Stock not found"}), 404
-        
+            raise HTTPException(status_code=404, detail="Stock not found")
+
         # Add performance chart data
         stock_data["performanceData"] = get_stock_performance_data(symbol)
-        
-        return jsonify(stock_data)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
 
-@app.route('/api/search', methods=['GET'])
-def search_stocks():
+        return JSONResponse(content=stock_data)
+    except Exception as e:
+        return JSONResponse(status_code=500, content={"error": str(e)})
+        
+@app.get("/api/search")
+async def search_stocks(q: str = Query(default="", min_length=2)):
     """Search for stocks by symbol or name."""
-    query = request.args.get('q', '')
-    if not query or len(query) < 2:
-        return jsonify([])
-    
-    # This would ideally use a more comprehensive API for stock search
-    # For now, we'll just search through our popular stocks
+    if not q:
+        return []
+
     popular_symbols = ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA", "JPM", "V"]
-    
     results = []
+
     for symbol in popular_symbols:
-        if query.upper() in symbol:
+        if q.upper() in symbol:
             try:
                 stock_data = get_financial_data(symbol)
                 if stock_data:
                     results.append(stock_data)
             except Exception as e:
                 print(f"Error in search for {symbol}: {e}")
-    
-    return jsonify(results)
+
+    return JSONResponse(content=results)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
