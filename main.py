@@ -4,6 +4,9 @@ import json
 from datetime import datetime, timedelta
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+from fastapi import FastAPI
+import uvicorn
+import os
 import requests
 from yahooquery import Ticker
 from config import (
@@ -13,7 +16,8 @@ from config import (
     FINNHUB_BASE_URL,
 )
 
-app = Flask(__name__)
+#app = Flask(__name__)
+app = FastAPI()
 CORS(app)  # Enable CORS for all routes
 
 def get_price_from_alpha_vantage(symbol):
@@ -236,5 +240,5 @@ def search_stocks():
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8080))
-    #uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
-    gunicorn main:app --bind 0.0.0.0:$PORT
+    uvicorn.run("main:app", host="0.0.0.0", port=port, reload=True)
+    #gunicorn main:app --bind 0.0.0.0:$PORT
