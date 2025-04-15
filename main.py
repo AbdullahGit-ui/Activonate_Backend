@@ -10,6 +10,7 @@ import os
 import requests
 from yahooquery import Ticker
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from config import (
     ALPHA_VANTAGE_API_KEY,
     FINNHUB_API_KEY,
