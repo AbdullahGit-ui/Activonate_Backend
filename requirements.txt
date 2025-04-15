@@ -49,5 +49,5 @@ tzdata==2025.1
 Werkzeug==2.2.2
 flask==2.2.2
 flask_cors==3.0.10
-requests==2.9.1
+requests>=2.27.1
 urllib3==1.26.5
